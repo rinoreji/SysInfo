@@ -8,6 +8,7 @@ namespace SysInfo
 {
     public static class ExtentionMethods
     {
+        const string DB_FILE_NAME = "BatteryInfos.txt";
         public static string UseFormat(this string format, params object[] args)
         {
             return String.Format(format, args);
@@ -18,7 +19,7 @@ namespace SysInfo
             var location = Assembly.GetExecutingAssembly().Location;
             var dir = new FileInfo(location).Directory;
 
-            using (var stream = File.OpenWrite(Path.Combine(dir.FullName, "BatteryInfos.txt")))
+            using (var stream = File.OpenWrite(Path.Combine(dir.FullName, DB_FILE_NAME)))
             {
                 XmlSerializer serializer = new XmlSerializer(typeof(List<BatteryInfo>));
                 serializer.Serialize(stream, batteryInfos);
@@ -30,7 +31,7 @@ namespace SysInfo
             var location = Assembly.GetExecutingAssembly().Location;
             var dir = new FileInfo(location).Directory;
 
-            using (var stream = File.OpenRead(Path.Combine(dir.FullName, "BatteryInfos.txt")))
+            using (var stream = File.OpenRead(Path.Combine(dir.FullName, DB_FILE_NAME)))
             {
                 XmlSerializer serializer = new XmlSerializer(typeof(List<BatteryInfo>));
                 return (List<BatteryInfo>)serializer.Deserialize(stream);
